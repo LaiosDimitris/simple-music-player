@@ -7,8 +7,8 @@ import os
 
 class Youtube:
     """
-    Youtube class for searching 
-    videos from youtube.
+    Youtube class for searching videos 
+    from youtube.
 
     """
     def __init__(self) -> None:
@@ -29,11 +29,15 @@ class Youtube:
         otherwise it returns False.
 
         """
-        return self.__download(url, filename, destination)
+        return self.__download(url, self.search(url)['title'], destination)
 
     def __search(self, query: str):
-        results = json.loads(SearchVideos(keyword=query, max_results=1).result())
-        video = pafy.new(results['search_result'][0]['link'])
+        try:
+            results = json.loads(SearchVideos(keyword=query, max_results=1).result())
+            video = pafy.new(results['search_result'][0]['link'])
+        except Exception as e:
+            print(f'An error occured while searching Youtube for {query}\n{e}')
+            return None
         return {
             "title": results['search_result'][0]['title'],
             "url": results['search_result'][0]['link'],
