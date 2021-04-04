@@ -1,6 +1,2 @@
 """ model package modules """
-from . import (
-    vlcplayer, 
-    youtube, 
-    filemanager
-)
+from . import vlcplayer, youtube, filemanager

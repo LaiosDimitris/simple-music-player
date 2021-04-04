@@ -22,27 +22,27 @@ class Youtube:
         """
         return self.__search(query)
 
-    def download(self, url: str, title: str, destination='..\\..\\music\\tracks') -> bool:
+    def download(self, url: str, filename: str, destination='music\\tracks') -> bool:
         """
         Downloads the video's audio in mp3 format. 
         Returns True if the download was successful,
         otherwise it returns False.
 
         """
-        return self.__download(url, title, destination)
+        return self.__download(url, filename, destination)
 
     def __search(self, query: str):
         results = json.loads(SearchVideos(keyword=query, max_results=1).result())
-        video = pafy.new(self.search_results["url"])
+        video = pafy.new(results['search_result'][0]['link'])
         return {
-            "title": results['search_result'][0]['link'],
-            "url": results['search_result'][0]['title'],
+            "title": results['search_result'][0]['title'],
+            "url": results['search_result'][0]['link'],
             "thumbnail": video.bigthumbhd,
             "length": int(video.length),
             "video": video.getbest().url,
         }
 
-    def __generateValidFilename(self, title: str):
+    def __generateValidFilename(self, filename: str):
         """
         The filenames YoutubeDL gives to the downloaded files
         is based on the video's title. If the video's title
@@ -51,12 +51,12 @@ class Youtube:
 
         """
         try:
-            validate_filename(f'{title}.mp3')
-            return title
+            validate_filename(f'{filename}')
+            return filename
         except Exception as e:
-            return sanitize_filename(f'{title}.mp3')
+            return sanitize_filename(f'{filename}')
 
-    def __moveFileToTracksFolder(self, title: str, destination: str):
+    def __moveFileToTracksFolder(self, filename: str, destination: str):
         """
         YoutubeDL downloads files in the current working directory,
         so we need to move the downloaded file to the destination
@@ -64,11 +64,11 @@ class Youtube:
         
         """
         fileToMove = [file for file in os.listdir() if file.endswith('.mp3')][0]
-        filename = self.__generateValidFilename(title)
-        os.rename(fileToMove, f'music\\tracks\\{filename}')
+        validFilename = self.__generateValidFilename(filename)
+        os.rename(fileToMove, f'{destination}\\{validFilename}.mp3')
 
-    def __download(self, url: str, title: str, destination: str):
-        ydl_opts = {
+    def __download(self, url: str, filename: str, destination: str):
+        ydlOptions = {
             'format': 'bestaudio/best',
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
@@ -76,9 +76,9 @@ class Youtube:
                 'preferredquality': '320',
             }]}
         try:
-            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            with youtube_dl.YoutubeDL(ydlOptions) as ydl:
                 ydl.download([url])
-            self.__moveFileToTracksFolder(title, destination)
+            self.__moveFileToTracksFolder(filename, destination)
             return True
         except Exception as e:
             print(f'An error occured while downloading track from {url}\n{e}')
