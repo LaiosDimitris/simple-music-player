@@ -3,6 +3,7 @@ from youtubesearchpython import SearchVideos
 import youtube_dl
 import pafy
 import json
+import os
 
 class Youtube:
     """
@@ -42,11 +43,18 @@ class Youtube:
         }
 
     def __generateValidFilename(self, title: str):
+        """
+        The filenames YoutubeDL gives to the downloaded files
+        is based on the video's title. If the video's title
+        contains special characters then the file won't be
+        created successfuly.
+
+        """
         try:
-            validate_filename(self.search_results['title'])
-            valid_title = self.search_results['title']
+            validate_filename(f'{title}.mp3')
+            return title
         except Exception as e:
-            valid_title = sanitize_filename(self.search_results['title'])
+            return sanitize_filename(f'{title}.mp3')
 
     def __moveFileToTracksFolder(self, title: str, destination: str):
         """
@@ -55,8 +63,9 @@ class Youtube:
         of our choice.
         
         """
+        fileToMove = [file for file in os.listdir() if file.endswith('.mp3')][0]
         filename = self.__generateValidFilename(title)
-        """ commit test """
+        os.rename(fileToMove, f'music\\tracks\\{filename}')
 
     def __download(self, url: str, title: str, destination: str):
         ydl_opts = {
