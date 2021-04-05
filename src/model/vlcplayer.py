@@ -2,8 +2,6 @@ from .filemanager import FileManager
 from mutagen.mp3 import MP3
 import vlc
 
-#vlc.MediaPlayer.play
-
 class VlcPlayer:
     """
     VlcPlayer class that uses vlc to 
