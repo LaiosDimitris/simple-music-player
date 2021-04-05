@@ -14,3 +14,7 @@ while True:
         player.playNext()
     elif command == 'previous':
         player.playPrevious()
+    elif command.startswith('skip'):
+        player.skip(int(command.split()[1]))
+    elif command.startswith('vol'):
+        player.setVolume(int(command.split()[1]))

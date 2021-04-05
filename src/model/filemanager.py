@@ -28,6 +28,6 @@ class FileManager:
         filepaths = [f'..\\music\\playlists\\{file}' for file in os.listdir('..\\music\\playlists') if file.endswith('.json')]
         playlists = []
         for file in filepaths:
-            with open(file, 'r') as jsonFile:
+            with open(file, 'r', encoding='utf-8') as jsonFile:
                 playlists.append(json.load(jsonFile))
         return playlists
