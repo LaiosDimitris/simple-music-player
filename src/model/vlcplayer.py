@@ -102,7 +102,7 @@ class VlcPlayer:
         """
         self.__setVolume(vol)
 
-    def update(self):
+    def update(self) -> None:
         """
         Reloads all the tracks and playlists again.
 
