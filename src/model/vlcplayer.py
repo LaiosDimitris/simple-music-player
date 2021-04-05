@@ -2,7 +2,7 @@ from .filemanager import FileManager
 from mutagen.mp3 import MP3
 import vlc
 
-vlc.MediaPlayer.play
+#vlc.MediaPlayer.play
 
 class VlcPlayer:
     """
@@ -13,9 +13,7 @@ class VlcPlayer:
     """
     def __init__(self) -> None:
         self.tracks = FileManager().loadTracks()
-        print(self.tracks)
         self.playlists = FileManager().loadPlaylists()
-        print(self.playlists)
         self.__vlc = vlc.Instance()
         self.__mediaPlayer = self.__vlc.media_player_new()
         self.__state = {
@@ -106,6 +104,13 @@ class VlcPlayer:
         """
         self.__setVolume(vol)
 
+    def update(self):
+        """
+        Reloads all the tracks and playlists again.
+
+        """
+        self.__update()
+
     def __play(self, filepath: str):
         self.__state['state'] = 'play'
         if filepath != None:
@@ -117,6 +122,9 @@ class VlcPlayer:
     def __playNext(self):
         if self.__state['state'] == 'start':
             return
+        if self.trackState['from'] != self.playlistState['name']:
+            self.__play(self.playlistState['tracks'][0])
+            return
         # If the currently playing song is the last in the playlist,
         # then play the 1st song in the playlist.
         trackIndex = self.trackState['index']
@@ -127,6 +135,9 @@ class VlcPlayer:
 
     def __playPrevious(self):
         if self.__state['state'] == 'start':
+            return
+        if self.trackState['from'] != self.playlistState['name']:
+            self.__play(self.playlistState['tracks'][0])
             return
         # If the currently playing song is the last in the playlist,
         # then play the 1st song in the playlist.
@@ -165,6 +176,11 @@ class VlcPlayer:
         for i, playlist in enumerate(self.playlists):
             if playlist['name'] == name:
                 self.__setPlaylistInfo(playlist, i)
+                return
+
+    def __update(self):
+        self.tracks = FileManager().loadTracks()
+        self.playlists = FileManager().loadPlaylists()
 
     def __setTrackInfo(self, filepath: str):
         self.trackState['index'] = self.playlistState['tracks'].index(filepath)
