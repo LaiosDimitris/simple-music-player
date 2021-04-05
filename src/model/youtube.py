@@ -22,7 +22,7 @@ class Youtube:
         """
         return self.__search(query)
 
-    def download(self, url: str, filename: str, destination='music\\tracks') -> bool:
+    def download(self, url: str, filename: str, destination='..\\music\\tracks') -> bool:
         """
         Downloads the video's audio in mp3 format. 
         Returns True if the download was successful,
@@ -52,7 +52,7 @@ class Youtube:
         is based on the video's title. If the video's title
         contains special characters then the file won't be
         created successfuly.
-
+        
         """
         try:
             validate_filename(f'{filename}')
