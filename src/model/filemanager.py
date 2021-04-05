@@ -3,7 +3,8 @@ import os
 
 class FileManager:
     def __init__(self) -> None:
-        pass
+        self.__trackPath = '..\\music\\tracks'
+        self.__playlistPath = '..\\music\\playlists'
 
     def loadTracks(self) -> list:
         """
@@ -21,13 +22,53 @@ class FileManager:
         """
         return self.__loadPlaylists()
 
+    def createPlaylist(self, name: str) -> bool:
+        """
+        Creates a new playlist. If the playlist is 
+        created successfuly it returns True. If a 
+        playlist with the same name exists, it returns False. 
+        
+        """
+        return self.__createPlaylist(name)
+
+    def addTrackToPlaylist(self, filepath, name='All Tracks'):
+        """
+        Adds a track to the given playlist.
+        
+        """
+        self.__addTrackToPlaylist(filepath, name)
+        
     def __loadTracks(self):
-        return [f'..\\music\\tracks\\{file}' for file in os.listdir('..\\music\\tracks') if file.endswith('.mp3')]
+        return [f'{self.__trackPath}\\{file}' for file in os.listdir(self.__trackPath) if file.endswith('.mp3')]
 
     def __loadPlaylists(self):
-        filepaths = [f'..\\music\\playlists\\{file}' for file in os.listdir('..\\music\\playlists') if file.endswith('.json')]
+        filepaths = [f'{self.__playlistPath}\\{file}' for file in os.listdir(self.__playlistPath) if file.endswith('.json')]
         playlists = []
         for file in filepaths:
             with open(file, 'r', encoding='utf-8') as jsonFile:
                 playlists.append(json.load(jsonFile))
         return playlists
+
+    def __createPlaylist(self, name: str):
+        for file in os.listdir(self.__playlistPath):
+            if file.endswith('.json'):
+                with open(f'{self.__playlistPath}\\{file}', 'r', encoding='utf-8') as jsonFile:
+                    if json.load(jsonFile)['name'] == name:
+                        return False
+        with open(f"{self.__playlistPath}\\{name.replace(' ', '-').lower()}.json", 'w', encoding='utf-8') as jsonFile:
+            json.dump({"name": name, "tracks": []}, jsonFile, indent=4)
+            return True
+
+    def __addTrackToPlaylist(self, filepath, name: str):
+        playlist = None
+        for file in os.listdir(self.__playlistPath):
+            if file.endswith('.json'):
+                with open(f'{self.__playlistPath}\\{file}', 'r', encoding='utf-8') as jsonFile:
+                    playlist = json.load(jsonFile)
+                    if playlist['name'] == name:
+                        playlist['tracks'].append(filepath)
+                with open(f'{self.__playlistPath}\\{file}', 'w', encoding='utf-8') as jsonFile:
+                    json.dump(playlist, jsonFile, indent=4)
+                return
+
+FileManager().addTrackToPlaylist('..\\music\\tracks\\shogeki.mp3', 'Yes Honey')
