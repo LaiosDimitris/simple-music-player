@@ -89,5 +89,3 @@ class FileManager:
                         with open(f'{self.__playlistPath}\\{file}', 'w', encoding='utf-8') as jsonFile:
                             json.dump(playlist, jsonFile, indent=4)
                         return
-
-FileManager().removeTrackFromPlaylist('..\\music\\tracks\\shogeki.mp3', 'Yes Honey')

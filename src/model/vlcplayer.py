@@ -123,6 +123,8 @@ class VlcPlayer:
         if self.trackState['from'] != self.playlistState['name']:
             self.__play(self.playlistState['tracks'][0])
             return
+        if len(self.playlistState['tracks']) == 0:
+            return
         # If the currently playing song is the last in the playlist,
         # then play the 1st song in the playlist.
         trackIndex = self.trackState['index']
@@ -136,6 +138,8 @@ class VlcPlayer:
             return
         if self.trackState['from'] != self.playlistState['name']:
             self.__play(self.playlistState['tracks'][0])
+            return
+        if len(self.playlistState['tracks']) == 0:
             return
         # If the currently playing song is the last in the playlist,
         # then play the 1st song in the playlist.
