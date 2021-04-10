@@ -158,11 +158,14 @@ class VlcPlayer:
         self.__mediaPlayer.stop()
 
     def __skip(self, pos: int):
-        # Vlc set_position method takes as argument a float between
-        # 0 and 1, 0 being the start of the track and 1 being the end.
-        # We need to calculate the correct number to pass to set_position
-        # based on the length of the track in seconds and the position
-        # we want to skip to.
+        """
+        Vlc set_position method takes as argument a float between
+        0 and 1, 0 being the start of the track and 1 being the end.
+        We need to calculate the correct number to pass to set_position
+        based on the length of the track in seconds and the position
+        we want to skip to.
+        
+        """
         posValue = ((pos * 100) / self.trackState['length']) / 100
         self.__mediaPlayer.set_position(posValue)
 

@@ -57,6 +57,7 @@ class FileManager:
         return playlists
 
     def __createPlaylist(self, name: str):
+        # Check if playlist with the same name exists
         for file in os.listdir(self.__playlistPath):
             if file.endswith('.json'):
                 with open(f'{self.__playlistPath}\\{file}', 'r', encoding='utf-8') as jsonFile:
