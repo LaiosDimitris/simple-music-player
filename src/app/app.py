@@ -1,29 +1,21 @@
-import tkinter as tk
-import threading
+from mainwindow import MainWindow
+from PyQt5.QtWidgets import QApplication
+import sys
 
-class App(tk.Tk):
+class App(QApplication):
     """
-    Graphical interface using Tkinter.
+    Graphical interface using PyQt5.
     
     """
-    def __init__(self) -> None:
-        super().__init__()
-        self.__winWidth = 1200
-        self.__winHeight = 700
-        self.__windowInit()
-        self.__uiInit()
-        self.mainloop()
+    def __init__(self, argv) -> None:
+        super().__init__(argv)
+        self.__mainWindow = MainWindow()
 
-    def __windowInit(self):
-        """
-        Sets the window's dimensions, title and icon.
-        
-        """
-        self.geometry(f"{self.__winWidth}x{self.__winHeight}")
-        self.title('Simple Music Player')
-        self.resizable(0, 0)
+    def run(self):
+        self.__mainWindow.show()
+        sys.exit(self.exec_())
 
-    def __uiInit(self):
-        pass
+if __name__ == "__main__":
+    app = App(sys.argv)
+    app.run()
 
-App()
