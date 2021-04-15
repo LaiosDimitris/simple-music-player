@@ -48,45 +48,4 @@ class FileManager:
     def __loadTracks(self):
         return [f'{self.__trackPath}\\{file}' for file in os.listdir(self.__trackPath) if file.endswith('.mp3')]
 
-    def __loadPlaylists(self):
-        filepaths = [f'{self.__playlistPath}\\{file}' for file in os.listdir(self.__playlistPath) if file.endswith('.json')]
-        playlists = []
-        for file in filepaths:
-            with open(file, 'r', encoding='utf-8') as jsonFile:
-                playlists.append(json.load(jsonFile))
-        return playlists
-
-    def __createPlaylist(self, name: str):
-        # Check if playlist with the same name exists
-        for file in os.listdir(self.__playlistPath):
-            if file.endswith('.json'):
-                with open(f'{self.__playlistPath}\\{file}', 'r', encoding='utf-8') as jsonFile:
-                    if json.load(jsonFile)['name'] == name:
-                        return False
-        with open(f"{self.__playlistPath}\\{name.replace(' ', '-').lower()}.json", 'w', encoding='utf-8') as jsonFile:
-            json.dump({"name": name, "tracks": []}, jsonFile, indent=4)
-            return True
-
-    def __addTrackToPlaylist(self, filepath, name: str):
-        playlist = None
-        for file in os.listdir(self.__playlistPath):
-            if file.endswith('.json'):
-                with open(f'{self.__playlistPath}\\{file}', 'r', encoding='utf-8') as jsonFile:
-                    playlist = json.load(jsonFile)
-                    if playlist['name'] == name:
-                        playlist['tracks'].append(filepath)
-                        with open(f'{self.__playlistPath}\\{file}', 'w', encoding='utf-8') as jsonFile:
-                            json.dump(playlist, jsonFile, indent=4)
-                        return
-
-    def __removeTrackFromPlaylist(self, filepath: str, name: str):
-        playlist = None
-        for file in os.listdir(self.__playlistPath):
-            if file.endswith('.json'):
-                with open(f'{self.__playlistPath}\\{file}', 'r', encoding='utf-8') as jsonFile:
-                    playlist = json.load(jsonFile)
-                    if playlist['name'] == name:
-                        playlist['tracks'].pop(playlist['tracks'].index(filepath))
-                        with open(f'{self.__playlistPath}\\{file}', 'w', encoding='utf-8') as jsonFile:
-                            json.dump(playlist, jsonFile, indent=4)
-                        return
+    
