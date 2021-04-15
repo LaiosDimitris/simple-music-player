@@ -1,7 +1,7 @@
 import tkinter as tk
 import threading
 
-class App(tk.Tk):
+class Mainwindow(tk.Tk):
     """
     Graphical interface using Tkinter.
     
@@ -22,4 +22,4 @@ class App(tk.Tk):
     def __initUI(self):
         pass
 
-App().mainloop()
+Mainwindow().mainloop()

@@ -2,11 +2,4 @@
 src/model/__pycache__
 
 # exclude all tracks in tracks folder
-music/tracks/*
-# .gitkeep to keep the tracks folder
-!music/tracks/.gitkeep
-
-# exclude all playlists in playlists folder
-music/playlists/*
-# .gitkeep to keep the playlists folder
-!music/playlists/.gitkeep
+music/*
