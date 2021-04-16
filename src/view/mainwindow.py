@@ -1,3 +1,4 @@
+from tkinter import ttk
 import tkinter as tk
 import threading
 
@@ -20,6 +21,7 @@ class Mainwindow(tk.Tk):
         self.resizable(0, 0)
 
     def __initUI(self):
-        pass
+        self.slider = ttk.Scale(self, length=100).pack()
+        
 
 Mainwindow().mainloop()

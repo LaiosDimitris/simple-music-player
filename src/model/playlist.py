@@ -5,8 +5,31 @@ class Playlist:
     Playlist class that takes a list of Track objects
     
     """
-    def __init__(self, tracks: list) -> None:
-        self.__tracks = tracks
+    def __init__(self, name: str) -> None:
+        self.__name = name
+        self.__tracks = []
+
+    def addTrack(self, track: Track) -> None:
+        """
+        Adds a track to the playlist.
+        
+        """
+        self.__addTrack(track)
+
+    def removeTrack(self, track: Track) -> None:
+        """
+        Removes first occurence of provided track
+        from the playlist.
+        
+        """
+        self.__removeTrack(track)
+
+    def getPlaylistName(self) -> str:
+        """
+        Returns the playlists name.
+        
+        """
+        return self.__getPlaylistName()
 
     def getTrackFilenames(self) -> list:
         """
@@ -43,6 +66,15 @@ class Playlist:
 
         """
         return self.__isEmpty()
+
+    def __addTrack(self, track: Track):
+        self.__tracks.append(track)
+
+    def __removeTrack(self, track: Track):
+        self.__tracks.remove(track)
+
+    def __getPlaylistName(self):
+        return self.__name
 
     def __getTrackFilenames(self):
         return [track.getFilename() for track in self.__tracks]

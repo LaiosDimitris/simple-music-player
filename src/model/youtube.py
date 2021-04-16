@@ -22,7 +22,7 @@ class Youtube:
         """
         return self.__search(query)
 
-    def download(self, url: str, filename: str, destination='..\\music\\tracks') -> bool:
+    def download(self, url: str, filename: str, destination='..\\music') -> bool:
         """
         Downloads the video's audio in mp3 format. 
         Returns True if the download was successful,

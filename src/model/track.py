@@ -30,6 +30,13 @@ class Track:
         """
         return self.__getTitle()
 
+    def rename(self, newTitle: str) -> None:
+        """
+        Rename the track.
+        
+        """
+        self.__rename(newTitle)
+
     def __getLength(self):
         return int(MP3(self.__filename).info.length)
 
@@ -38,3 +45,6 @@ class Track:
 
     def __getTitle(self):
         return self.__filename.replace('music\\', '')[:-4]
+
+    def __rename(self, newTitle: str):
+        self.__filename.replace(self.__getTitle(), newTitle)
